@@ -10,11 +10,13 @@
 \usepackage{booktabs}
 \usepackage{bbm}
 
-\newcommand{\yourname}{Joao Felipe Guedes da Silva \\ Wallace Abreu} % replace YOURNAME with your name
+\newcommand{\yourname}{Alex Castilio dos Santos \\Eduardo Alves da Silva \\Joao Felipe Guedes da Silva \\ Leonardo Barreto Alves \\  Maria Gabriella Andrade Felgas \\ Miguel Fernandes de Sousa \\ Pedro Henrique Lopes Leite \\ Renan da Silva Alves \\ Wallace Costa de Abreu \\ Gutemberg Machado Lopes} % replace YOURNAME with your name
 %\newcommand{\yournetid}{YOURNETID} % replace YOURNETID with your NetID
 \newcommand{\youremail}{guedes.joaofelipe@poli.ufrj.br} % replace YOUREMAIL with your email
 \newcommand{\assignmenttitle}{}
 \newcommand{\assignmentnumber}{1}
+
+\renewcommand{\thesubsection}{\alph{subsection})}
 
 \begin{document}
 
@@ -26,70 +28,60 @@
 %-------------------------------
 %	ASSIGNMENT CONTENT (add your responses)
 %-------------------------------
-\section{\textit{Filhos e Filhas}: Considere um casal que tem dois descendentes e que as chances de cada um deles ser filho ou filha são iguais. Responda às perguntas abaixo:}
+\section{Chapter 1}
 
-\subsection{Calcule a probabilidade dos descendentes formarem um casal (ou seja, um filho e uma filha)}.
+\subsection{Data rates:}
 
-Seja A o elemento ``descendente ser filha" e O o elemento ``descendente ser filho. Assim, como as chances de cada um deles ser filho ou filha são iguais: 
+\begin{enumerate}
+    \item $I_1=	8\times10^3\times8\times1=64 \text{ Kbps}$
+	\item $I_2=44.1\times10^3\times16\times2=1.4112\text{ Mbps}$
+	\item $I_3=44.1\times10^3\times16\times5=3.528 \text{ Mbps}$
+	\item $I_4=96\times10^3\times24\times5=11.52 \text{ Mbps}$
+\end{enumerate}
 
-$$P_A = P_O = 1/2$$
+\subsection{The need for compression:}
 
-Considerando que o casal terá dois descendentes, o espaço amostral de possíveis pares de descendentes é: 
+\begin{enumerate}
+    \item $	S=11.52\times10^6\times2\times60\times60=82.944 \text{ Gb}$
+	\item $	r_{CD}=11.52/1.411\approx8.16$
+	\item $	r_{DVD}=11.52/6.144\approx1.87$
+\end{enumerate}
 
-$$S = [\{A, O\}, \{A, A\}, \{O, O\}, \{O, A\}]$$
-
-Os eventos de interesse, portanto, são: $\{A, O\}$ ou $\{O, A\}$.
-
-A probabilidade de cada um desses eventos é:
-
-$$P[\{A, O\}] = P[A \wedge	 O] = 1/2 \cdot 1/2 = 1/4$$
-$$P[\{O, A\}] = P[O \wedge	 A] = 1/2 \cdot 1/2 = 1/4$$
-
-Logo, a probabilidade de se ter um casal é:
-
-$$P_{casal} = P[\{A, O\} \vee \{O, A\}] = 1/4 + 1/4 = 1/2$$
-
-\subsection{Calcule a probabilidade de ao menos um dos descendentes ser filho.}
-
-Neste caso, os eventos de interesse são: $\{A, O\}, \{O, O\}, \{O, A\}]$.
-
-Portanto, 
-
-$$P_{1\ filho} = P[\{A, O\} \vee \{O, O\} \vee \{O, A\}] = 1/4 + 1/4 + 1/4 = 3/4$$
+\section{Chapter 2}
 
 
-\subsection{Calcule a probabilidade das duas serem filhas dado que uma é filha (cuidado!)}
+\subsection{Plotar sobrepostos os gráficos de “$\mu$-law” (com $\mu$ = 255 e b = e) e “A-law” (com A = 87.56).}
 
-Dado que 1 é filha, o espaço amostral é reduzido para o sub-conjunto: 
+Os plots para diferentes valores de $A$ e $\mu$ são apresentados na Figura \ref{fig:companding} para valores de entrada $x$ normalizados entre 0 e 1. Para observar os efeitos da escolha de $A$, incluímos alguns valores adicionais. 
 
-$$S_A = [\{A, O\}, \{A, A\}, \{O, A\}]$$.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=15cm]{images/logaritmic_companding.jpeg}
+    \caption{Logarithmic Companding}
+    \label{fig:companding}
+\end{figure}
+
+Dada a fórmula de compressão da $A$-law na Equação \ref{eq:alaw}
 
 \begin{equation}
-    \begin{split}
-        P[\{A, A\} | S_A] &= \frac{P[\{A, A\} \cap S_A]}{P[S_A]} \\
-            &= \frac{P[\{A, A\}]}{P[S_A]} \\
-            &= \frac{1/4}{3/4} \\
-            &= 1/3
-    \end{split}
-\end{equation}
+  c_A(|x|) =
+    \begin{cases}
+      \frac{1+\ln (A\cdot |x|)}{1+\ln A}\ \text{if}\ |x| > \frac{1}{A}\\
+      \frac{A}{1+\ln A} |x|\ \ \text{otherwise}
+    \end{cases}       
+    \label{eq:alaw}
+\end{equation} vemos que para $|x| \in [0, 1/A]$ a equação é linear e com derivada $d c(|x|)/ d x$ idealmente maior que 1. Isto significa que uma variação pequena no sinal de entrada $x$ será mapeada em uma variação grande no sinal de saída $c(|x|)$, configurando um comportamento de expansão até $x = 1/A$.\\
 
-\subsection{Calcule a probabilidade dos descendentes nascerem no mesmo dia (assuma que a chance de nascer em um determinado dia é igual a qualquer outro).}
+Por outro lado, para $x > 1/A$ a equação da $A$-law apresenta uma diminuição da derivada conforme a amplitude do sinal de entrada aumenta, fazendo com que o mapeamento diminua a ponto de ficar menor que 1, configurando um comportamento de compressão. \\
 
-Neste caso, podemos ignorar o sexo do descendente e analisar apenas o dia em que ele/ela nasceu. \\
+Portanto, vemos que a escolha do parâmetro $A$ impacta diretamente em um ponto crítico de operação linear do \textit{companding} logarítmico: quanto maior este parâmetro, maior será a taxa de expansão para sinais de baixa amplitude e compressão para altas amplitudes.
 
-Considerando que o ano possui 365 dias e a probabilidade do descendente nascer no dia $i$ é $P_i = 1/365, \forall i$, então: 
+\subsection{Working with bits}
 
-$$P[D_1 = i \wedge D_2 = i]$$
-
-Onde $D_1$ e $D_2$ são as datas de nascimento do primeiro e segundo descendente, respectivamente. Considerando que o nascimento de ambos sejam eventos independentes: 
-
-$$P[D_1 = i \wedge D_2 = i] = P[D_1 = i] \cdot P[D_2 = i] = \Big( 1/365 \Big)^2$$
-
-
-
-
+O código com a resolução do exercício 8.2a encontra-se \href{https://github.com/guedes-joaofelipe/CPE793-topics-in-audio-codification/blob/main/exercises/chap02/exercises_chap02.ipynb}{\textit{neste link}}.
 
 %\bibliographystyle{acm}
+
 %\bibliography{references} % citation records are in the references.bib document
 
 \end{document}
